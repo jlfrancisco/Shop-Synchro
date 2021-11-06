@@ -1,0 +1,54 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /api/sync/:
+    post:
+      operationId: createShopReading
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopReading'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShopReading'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShopReading'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopReading'
+          description: ''
+      tags:
+      - api
+components:
+  schemas:
+    ShopReading:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gtin:
+          type: string
+          maxLength: 255
+        expiry_date:
+          type: string
+          format: date
+        reading_time:
+          type: string
+          format: date-time
+        shop:
+          type: integer
+      required:
+      - gtin
+      - expiry_date
+      - reading_time
+      - shop
