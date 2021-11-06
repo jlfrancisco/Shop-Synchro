@@ -12,7 +12,7 @@ urlpatterns = [
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
     path(
-        "doc/",
+        "docs/",
         TemplateView.as_view(
             template_name="openapi-ui.html",
             extra_context={"schema_url": "openapi-schema"},
