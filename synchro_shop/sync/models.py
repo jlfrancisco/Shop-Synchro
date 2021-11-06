@@ -14,8 +14,13 @@ class ShopReading(models.Model):
     shop = models.ForeignKey(
         Shop, related_name="shop_reading", on_delete=models.CASCADE
     )
-    gtin = models.CharField(
-        "Global Trade Identificationn Number", max_length=255, unique=True
-    )
+    gtin = models.CharField("Global Trade Identification Number", max_length=255)
     expiry_date = models.DateField()
     reading_time = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        shop = ShopReading.objects.filter(shop=self.shop, gtin=self.gtin).first()
+        if shop and shop.reading_time < self.reading_time:
+            shop.expiry_date = self.expiry_date
+            return shop.save()
+        return super().save(*args, **kwargs)
