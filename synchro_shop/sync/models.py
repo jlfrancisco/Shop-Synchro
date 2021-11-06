@@ -19,8 +19,13 @@ class ShopReading(models.Model):
     reading_time = models.DateTimeField()
 
     def save(self, *args, **kwargs):
-        shop = ShopReading.objects.filter(shop=self.shop, gtin=self.gtin).first()
-        if shop and shop.reading_time < self.reading_time:
-            shop.expiry_date = self.expiry_date
-            return shop.save()
+        existing_obj = ShopReading.objects.filter(
+            shop=self.shop, gtin=self.gtin
+        ).first()
+        if existing_obj:
+            self.pk = existing_obj.pk
+            if self.reading_time < existing_obj.reading_time:
+                self.expiry_date = existing_obj.expiry_date
+                self.reading_time = existing_obj.reading_time
+            return super().save(force_update=True)
         return super().save(*args, **kwargs)
